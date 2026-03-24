@@ -22,7 +22,6 @@ class MapViewModel : ViewModel() {
 
     private fun loadEcopontos() {
         try {
-            // Mock de dados para o MVP inicial
             val ecopontosMock = listOf(
                 Ecoponto("1", "Ecoponto Vila Velha", "Rua X, 123", -3.732, -38.592, listOf("Papel", "Vidro"), "Regional 1"),
                 Ecoponto("2", "Ecoponto Bairro Ellery", "Rua Y, 456", -3.725, -38.550, listOf("Óleo", "Plástico"), "Regional 1")

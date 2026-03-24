@@ -9,28 +9,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.ecoponto.ui.navigation.Screen
+import com.example.ecoponto.ui.screens.EcopontosListScreen
 import com.example.ecoponto.ui.screens.GuideScreen
 import com.example.ecoponto.ui.screens.HomeScreen
 import com.example.ecoponto.ui.screens.MapScreen
+import com.example.ecoponto.ui.screens.RegionalsScreen
 import com.example.ecoponto.ui.screens.ReportScreen
 import com.example.ecoponto.ui.theme.EcopontoTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
-        // Ativando Edge-to-Edge para uma UI moderna que ocupa toda a tela
         enableEdgeToEdge()
-        
         setContent {
             EcopontoTheme {
-                // O Scaffold é o layout básico do Material Design
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    // Configurando a Navegação Centralizada
                     AppNavigation(modifier = Modifier.padding(innerPadding))
                 }
             }
@@ -42,7 +41,6 @@ class MainActivity : ComponentActivity() {
 fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     
-    // O NavHost gerencia o ciclo de vida das telas no Compose
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route,
@@ -54,6 +52,18 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         composable(Screen.Map.route) {
             MapScreen(navController)
         }
+        composable(Screen.Regionals.route) {
+            RegionalsScreen(navController)
+        }
+        
+        composable(
+            route = Screen.EcopontosList.route,
+            arguments = listOf(navArgument("regionalId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val regionalId = backStackEntry.arguments?.getInt("regionalId") ?: 1
+            EcopontosListScreen(navController, regionalId)
+        }
+
         composable(Screen.Guide.route) {
             GuideScreen(navController)
         }
