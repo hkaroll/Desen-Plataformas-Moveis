@@ -79,6 +79,14 @@ fun HomeScreen(navController: NavController) {
                                         navController.navigate(Screen.Guide.route) 
                                     }
                                 )
+                                HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp), thickness = 0.5.dp)
+                                DropdownMenuItem(
+                                    text = { Text("Reportar Irregularidade", fontSize = 16.sp, color = Color(0xFF2D5A27), fontWeight = FontWeight.Medium) },
+                                    onClick = { 
+                                        mMenuExpanded = false
+                                        navController.navigate(Screen.Report.route) 
+                                    }
+                                )
                             }
                         }
                     },
@@ -123,7 +131,8 @@ fun HomeScreen(navController: NavController) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 32.dp),
+                    .padding(horizontal = 32.dp)
+                    .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
@@ -158,7 +167,6 @@ fun HomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(40.dp))
 
-                // Botão Encontrar Pontos
                 Button(
                     onClick = { navController.navigate(Screen.Map.route) },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -172,7 +180,6 @@ fun HomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Botão Como Reciclar
                 OutlinedButton(
                     onClick = { navController.navigate(Screen.Guide.route) },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -186,7 +193,6 @@ fun HomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Botão Meus Favoritos
                 OutlinedButton(
                     onClick = { navController.navigate(Screen.Favorites.route) },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -198,9 +204,21 @@ fun HomeScreen(navController: NavController) {
                     Text("Meus Favoritos", fontSize = 16.sp, color = Color(0xFFD32F2F))
                 }
 
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height(16.dp))
 
-                // Banner Inferior
+                OutlinedButton(
+                    onClick = { navController.navigate(Screen.Report.route) },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(brush = androidx.compose.ui.graphics.SolidColor(Color(0xFF2D5A27))),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = null, tint = Color(0xFF2D5A27))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Reportar Descarte Irregular", fontSize = 16.sp, color = Color(0xFF2D5A27))
+                }
+
+                Spacer(modifier = Modifier.height(32.dp))
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
