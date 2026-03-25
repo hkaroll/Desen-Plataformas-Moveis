@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -98,9 +97,6 @@ fun RegionalsScreen(navController: NavController) {
                     actions = {
                         IconButton(onClick = { isSearchActive = true }) {
                             Icon(Icons.Default.Search, "Buscar", tint = Color(0xFF2D5A27), modifier = Modifier.size(32.dp))
-                        }
-                        IconButton(onClick = { /* Mais */ }) {
-                            Icon(Icons.Default.MoreVert, "Mais", tint = Color(0xFF2D5A27), modifier = Modifier.size(32.dp))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -212,27 +208,6 @@ fun RegionalsScreen(navController: NavController) {
                                 }
                             )
                         }
-                    }
-                }
-            }
-
-            if (!isSearchActive) {
-                Surface(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(bottom = 24.dp, end = 16.dp)
-                        .size(64.dp),
-                    shape = CircleShape,
-                    color = Color(0xFF1B4332),
-                    shadowElevation = 4.dp
-                ) {
-                    IconButton(onClick = { navController.navigate(Screen.Map.route) }) {
-                        Icon(
-                            imageVector = Icons.Default.Place,
-                            contentDescription = "Mapa",
-                            tint = Color.White,
-                            modifier = Modifier.size(32.dp)
-                        )
                     }
                 }
             }

@@ -2,10 +2,13 @@ package com.example.ecoponto.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -22,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.ecoponto.R
+import com.example.ecoponto.model.regionalData
 import com.example.ecoponto.ui.navigation.Screen
 import com.example.ecoponto.viewmodel.MapUiState
 import com.example.ecoponto.viewmodel.MapViewModel
@@ -94,14 +98,6 @@ fun MapScreen(navController: NavController, viewModel: MapViewModel = viewModel(
                                 modifier = Modifier.size(32.dp)
                             )
                         }
-                        IconButton(onClick = { /* Mais */ }) {
-                            Icon(
-                                imageVector = Icons.Default.MoreVert,
-                                contentDescription = "Mais",
-                                tint = Color(0xFF2D5A27),
-                                modifier = Modifier.size(32.dp)
-                            )
-                        }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(containerColor = Color(0xFFF7FBF7))
                 )
@@ -154,23 +150,6 @@ fun MapScreen(navController: NavController, viewModel: MapViewModel = viewModel(
                 contentScale = ContentScale.Crop
             )
 
-            if (uiState is MapUiState.Success) {
-                Box(modifier = Modifier.fillMaxSize()) {
-                    Icon(
-                        imageVector = Icons.Default.LocationOn,
-                        contentDescription = null,
-                        tint = Color(0xFF1976D2),
-                        modifier = Modifier.size(40.dp).align(Alignment.Center).offset(x = (-50).dp, y = (-20).dp)
-                    )
-                    Icon(
-                        imageVector = Icons.Default.LocationOn,
-                        contentDescription = null,
-                        tint = Color(0xFF1976D2),
-                        modifier = Modifier.size(40.dp).align(Alignment.Center).offset(x = 40.dp, y = 60.dp)
-                    )
-                }
-            }
-
             if (isSearchActive) {
                 SearchBar(
                     query = searchQuery,
@@ -181,7 +160,7 @@ fun MapScreen(navController: NavController, viewModel: MapViewModel = viewModel(
                     placeholder = { Text("Buscar Ecoponto ou Bairro...") },
                     leadingIcon = { 
                         IconButton(onClick = { isSearchActive = false }) {
-                            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Voltar")
+                            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
                         }
                     },
                     trailingIcon = {
@@ -194,33 +173,23 @@ fun MapScreen(navController: NavController, viewModel: MapViewModel = viewModel(
                     modifier = Modifier.fillMaxWidth(),
                     colors = SearchBarDefaults.colors(containerColor = Color.White)
                 ) {
-                    Column(modifier = Modifier.padding(16.dp)) {
-                        ListItem(
-                            headlineContent = { Text("Ecoponto Vila Velha") },
-                            supportingContent = { Text("Regional 1") },
-                            leadingContent = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
-                            modifier = Modifier.fillMaxWidth()
-                        )
+                    val filteredRegionals = regionalData.filter { regional ->
+                        regional.name.contains(searchQuery, ignoreCase = true) ||
+                        regional.ecopontos.any { it.contains(searchQuery, ignoreCase = true) }
                     }
-                }
-            }
 
-            if (!isSearchActive) {
-                Surface(
-                    modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp).size(56.dp),
-                    shape = CircleShape,
-                    color = Color(0xFF1B4332),
-                    shadowElevation = 6.dp
-                ) {
-                    IconButton(onClick = { 
-                        scale = 1f
-                        offset = androidx.compose.ui.geometry.Offset.Zero
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.LocationOn,
-                            contentDescription = "Resetar Vista",
-                            tint = Color.White
-                        )
+                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        filteredRegionals.forEach { regional ->
+                            ListItem(
+                                headlineContent = { Text(regional.name) },
+                                supportingContent = { Text(regional.ecopontos.take(2).joinToString(", ") + "...") },
+                                leadingContent = { Icon(Icons.Default.LocationOn, null, tint = Color(0xFF2D5A27)) },
+                                modifier = Modifier.fillMaxWidth().clickable {
+                                    isSearchActive = false
+                                    navController.navigate(Screen.EcopontosList.createRoute(regional.id))
+                                }
+                            )
+                        }
                     }
                 }
             }

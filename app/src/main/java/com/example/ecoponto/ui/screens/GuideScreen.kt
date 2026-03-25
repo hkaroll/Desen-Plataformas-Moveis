@@ -49,7 +49,7 @@ fun GuideScreen(navController: NavController) {
         GuidePage(
             GuidePageType.MATERIAL, "Papel e Papelão", Color(0xFFBBDEFB), Color(0xFF1976D2),
             canRecycle = listOf("Jornais e revistas", "Caixas de papelão", "Folhas de papel", "Envelopes", "Cadernos sem espiral"),
-            cannotRecycle = listOf("Papel higiênico", "Guardanapos usados", "Papel carbono", "Papel metalizado", "Fotografias"),
+            cannotRecycle = listOf("Paper higiênico", "Guardanapos usados", "Papel carbono", "Papel metalizado", "Fotografias"),
             tip = "Dobre as caixas para economizar espaço. Remova fitas adesivas e grampos."
         ),
         GuidePage(
@@ -110,7 +110,6 @@ fun GuideScreen(navController: NavController) {
                 },
                 actions = {
                     IconButton(onClick = { }) { Icon(Icons.Default.Search, null, tint = Color(0xFF2D5A27)) }
-                    IconButton(onClick = { }) { Icon(Icons.Default.MoreVert, null, tint = Color(0xFF2D5A27)) }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
@@ -179,46 +178,34 @@ fun IntroPage(page: GuidePage) {
 
 @Composable
 fun MaterialPage(page: GuidePage) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Card(
-            modifier = Modifier.fillMaxSize(),
-            colors = CardDefaults.cardColors(containerColor = page.color),
-            shape = RoundedCornerShape(24.dp),
-            border = androidx.compose.foundation.BorderStroke(1.dp, page.textColor.copy(alpha = 0.2f))
-        ) {
-            Column(modifier = Modifier.padding(24.dp)) {
-                Text(page.title, fontSize = 28.sp, fontWeight = FontWeight.Bold, color = page.textColor, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
-                Spacer(modifier = Modifier.height(24.dp))
-                
-                Surface(color = Color.White, shape = RoundedCornerShape(16.dp)) {
-                    Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
-                        Text("O que reciclar", fontWeight = FontWeight.Bold, color = page.textColor)
-                        page.canRecycle.forEach { Text("• $it", fontSize = 15.sp, color = Color.DarkGray) }
-                    }
+    Card(
+        modifier = Modifier.fillMaxSize(),
+        colors = CardDefaults.cardColors(containerColor = page.color),
+        shape = RoundedCornerShape(24.dp),
+        border = androidx.compose.foundation.BorderStroke(1.dp, page.textColor.copy(alpha = 0.2f))
+    ) {
+        Column(modifier = Modifier.padding(24.dp)) {
+            Text(page.title, fontSize = 28.sp, fontWeight = FontWeight.Bold, color = page.textColor, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth())
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            Surface(color = Color.White, shape = RoundedCornerShape(16.dp)) {
+                Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
+                    Text("O que reciclar", fontWeight = FontWeight.Bold, color = page.textColor)
+                    page.canRecycle.forEach { Text("• $it", fontSize = 15.sp, color = Color.DarkGray) }
                 }
-                
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                Surface(color = Color.White, shape = RoundedCornerShape(16.dp)) {
-                    Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
-                        Text("O que NÃO reciclar", fontWeight = FontWeight.Bold, color = page.textColor)
-                        page.cannotRecycle.forEach { Text("• $it", fontSize = 15.sp, color = Color.DarkGray) }
-                    }
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Surface(color = Color.White, shape = RoundedCornerShape(16.dp)) {
+                Column(modifier = Modifier.padding(16.dp).fillMaxWidth()) {
+                    Text("O que NÃO reciclar", fontWeight = FontWeight.Bold, color = page.textColor)
+                    page.cannotRecycle.forEach { Text("• $it", fontSize = 15.sp, color = Color.DarkGray) }
                 }
-                
-                Spacer(modifier = Modifier.weight(1f))
-                Text("Dica: ${page.tip}", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = page.textColor)
             }
-        }
-        
-        Surface(
-            modifier = Modifier.align(Alignment.TopEnd).padding(16.dp).size(48.dp),
-            shape = CircleShape,
-            color = Color(0xFF1B4332)
-        ) {
-            Box(contentAlignment = Alignment.Center) {
-                Icon(Icons.Default.LocationOn, null, tint = Color.White, modifier = Modifier.size(24.dp))
-            }
+            
+            Spacer(modifier = Modifier.weight(1f))
+            Text("Dica: ${page.tip}", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = page.textColor)
         }
     }
 }

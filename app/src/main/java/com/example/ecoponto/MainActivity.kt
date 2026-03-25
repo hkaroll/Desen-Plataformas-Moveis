@@ -15,12 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.ecoponto.ui.navigation.Screen
-import com.example.ecoponto.ui.screens.EcopontosListScreen
-import com.example.ecoponto.ui.screens.GuideScreen
-import com.example.ecoponto.ui.screens.HomeScreen
-import com.example.ecoponto.ui.screens.MapScreen
-import com.example.ecoponto.ui.screens.RegionalsScreen
-import com.example.ecoponto.ui.screens.ReportScreen
+import com.example.ecoponto.ui.screens.*
 import com.example.ecoponto.ui.theme.EcopontoTheme
 
 class MainActivity : ComponentActivity() {
@@ -69,6 +64,9 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
         composable(Screen.Report.route) {
             ReportScreen(navController)
+        }
+        composable(Screen.Favorites.route) {
+            FavoritesScreen(navController)
         }
     }
 }

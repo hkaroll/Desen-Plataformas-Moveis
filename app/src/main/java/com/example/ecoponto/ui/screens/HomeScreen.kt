@@ -2,9 +2,13 @@ package com.example.ecoponto.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,96 +22,100 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.ecoponto.R
+import com.example.ecoponto.model.regionalData
 import com.example.ecoponto.ui.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
     var mMenuExpanded by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
+    var isSearchActive by remember { mutableStateOf(false) }
 
     Scaffold(
         containerColor = Color(0xFFF7FBF7),
         topBar = {
-            TopAppBar(
-                title = { },
-                navigationIcon = {
-                    Box {
-                        IconButton(onClick = { mMenuExpanded = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Menu,
-                                contentDescription = "Menu",
-                                tint = Color(0xFF2D5A27),
-                                modifier = Modifier.size(32.dp)
-                            )
+            if (!isSearchActive) {
+                TopAppBar(
+                    title = { },
+                    navigationIcon = {
+                        Box {
+                            IconButton(onClick = { mMenuExpanded = true }) {
+                                Icon(
+                                    imageVector = Icons.Default.Menu,
+                                    contentDescription = "Menu",
+                                    tint = Color(0xFF2D5A27),
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+                            
+                            DropdownMenu(
+                                expanded = mMenuExpanded,
+                                onDismissRequest = { mMenuExpanded = false },
+                                modifier = Modifier
+                                    .background(Color(0xFFF7FBF7))
+                                    .width(220.dp)
+                            ) {
+                                DropdownMenuItem(
+                                    text = { Text("Mapa", fontSize = 16.sp, color = Color(0xFF2D5A27), fontWeight = FontWeight.Medium) },
+                                    onClick = { 
+                                        mMenuExpanded = false
+                                        navController.navigate(Screen.Map.route) 
+                                    }
+                                )
+                                HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp), thickness = 0.5.dp)
+                                DropdownMenuItem(
+                                    text = { Text("Pontos de Coleta", fontSize = 16.sp, color = Color(0xFF2D5A27), fontWeight = FontWeight.Medium) },
+                                    onClick = { 
+                                        mMenuExpanded = false
+                                        navController.navigate(Screen.Regionals.route) 
+                                    }
+                                )
+                                HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp), thickness = 0.5.dp)
+                                DropdownMenuItem(
+                                    text = { Text("Como Reciclar", fontSize = 16.sp, color = Color(0xFF2D5A27), fontWeight = FontWeight.Medium) },
+                                    onClick = { 
+                                        mMenuExpanded = false
+                                        navController.navigate(Screen.Guide.route) 
+                                    }
+                                )
+                            }
                         }
-                        
-                        DropdownMenu(
-                            expanded = mMenuExpanded,
-                            onDismissRequest = { mMenuExpanded = false },
-                            modifier = Modifier
-                                .background(Color(0xFFF7FBF7))
-                                .width(220.dp)
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text("Mapa", fontSize = 16.sp, color = Color(0xFF2D5A27), fontWeight = FontWeight.Medium) },
-                                onClick = { 
-                                    mMenuExpanded = false
-                                    navController.navigate(Screen.Map.route) 
-                                }
-                            )
-                            HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp), thickness = 0.5.dp)
-                            DropdownMenuItem(
-                                text = { Text("Pontos de Coleta", fontSize = 16.sp, color = Color(0xFF2D5A27), fontWeight = FontWeight.Medium) },
-                                onClick = { 
-                                    mMenuExpanded = false
-                                    navController.navigate(Screen.Regionals.route) 
-                                }
-                            )
-                            HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp), thickness = 0.5.dp)
-                            DropdownMenuItem(
-                                text = { Text("Como Reciclar", fontSize = 16.sp, color = Color(0xFF2D5A27), fontWeight = FontWeight.Medium) },
-                                onClick = { 
-                                    mMenuExpanded = false
-                                    navController.navigate(Screen.Guide.route) 
-                                }
-                            )
+                    },
+                    actions = {
+                        IconButton(onClick = { isSearchActive = true }) {
+                            Icon(Icons.Default.Search, contentDescription = "Buscar", tint = Color(0xFF2D5A27), modifier = Modifier.size(32.dp))
                         }
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.Search, contentDescription = "Buscar", tint = Color(0xFF2D5A27), modifier = Modifier.size(32.dp))
-                    }
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Default.MoreVert, contentDescription = "Mais", tint = Color(0xFF2D5A27), modifier = Modifier.size(32.dp))
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
-            )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+                )
+            }
         },
         bottomBar = {
-            NavigationBar(
-                containerColor = Color.White,
-                contentColor = Color(0xFF2D5A27)
-            ) {
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-                    label = { Text("Home") },
-                    selected = true,
-                    onClick = { }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.Place, contentDescription = "Mapa") },
-                    label = { Text("Mapa") },
-                    selected = false,
-                    onClick = { navController.navigate(Screen.Map.route) }
-                )
-                NavigationBarItem(
-                    icon = { Icon(Icons.Default.LocationOn, contentDescription = "Pontos") },
-                    label = { Text("Pontos") },
-                    selected = false,
-                    onClick = { navController.navigate(Screen.Regionals.route) }
-                )
+            if (!isSearchActive) {
+                NavigationBar(
+                    containerColor = Color.White,
+                    contentColor = Color(0xFF2D5A27)
+                ) {
+                    NavigationBarItem(
+                        icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
+                        label = { Text("Home") },
+                        selected = true,
+                        onClick = { }
+                    )
+                    NavigationBarItem(
+                        icon = { Icon(Icons.Default.Place, contentDescription = "Mapa") },
+                        label = { Text("Mapa") },
+                        selected = false,
+                        onClick = { navController.navigate(Screen.Map.route) }
+                    )
+                    NavigationBarItem(
+                        icon = { Icon(Icons.Default.LocationOn, contentDescription = "Pontos") },
+                        label = { Text("Pontos") },
+                        selected = false,
+                        onClick = { navController.navigate(Screen.Regionals.route) }
+                    )
+                }
             }
         }
     ) { innerPadding ->
@@ -150,6 +158,7 @@ fun HomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(40.dp))
 
+                // Botão Encontrar Pontos
                 Button(
                     onClick = { navController.navigate(Screen.Map.route) },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -163,10 +172,11 @@ fun HomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                // Botão Como Reciclar
                 OutlinedButton(
                     onClick = { navController.navigate(Screen.Guide.route) },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    border = ButtonDefaults.outlinedButtonBorder.copy(brush = androidx.compose.ui.graphics.SolidColor(Color(0xFF1B4332))),
+                    border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(brush = androidx.compose.ui.graphics.SolidColor(Color(0xFF1B4332))),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Icon(Icons.Default.Info, contentDescription = null, tint = Color(0xFF1B4332))
@@ -176,10 +186,11 @@ fun HomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                // Botão Meus Favoritos
                 OutlinedButton(
-                    onClick = { },
+                    onClick = { navController.navigate(Screen.Favorites.route) },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    border = ButtonDefaults.outlinedButtonBorder.copy(brush = androidx.compose.ui.graphics.SolidColor(Color(0xFFD32F2F))),
+                    border = ButtonDefaults.outlinedButtonBorder(enabled = true).copy(brush = androidx.compose.ui.graphics.SolidColor(Color(0xFFD32F2F))),
                     shape = MaterialTheme.shapes.medium
                 ) {
                     Icon(Icons.Default.FavoriteBorder, contentDescription = null, tint = Color(0xFFD32F2F))
@@ -189,6 +200,7 @@ fun HomeScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.weight(1f))
 
+                // Banner Inferior
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -210,17 +222,47 @@ fun HomeScreen(navController: NavController) {
                 }
             }
 
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(bottom = 60.dp, end = 16.dp)
-                    .size(60.dp),
-                shape = CircleShape,
-                color = Color(0xFF1B4332),
-                shadowElevation = 4.dp
-            ) {
-                Box(contentAlignment = Alignment.Center) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color.White, modifier = Modifier.size(30.dp))
+            if (isSearchActive) {
+                SearchBar(
+                    query = searchQuery,
+                    onQueryChange = { searchQuery = it },
+                    onSearch = { isSearchActive = false },
+                    active = isSearchActive,
+                    onActiveChange = { isSearchActive = it },
+                    placeholder = { Text("Buscar Regional ou Bairro...") },
+                    leadingIcon = { 
+                        IconButton(onClick = { isSearchActive = false }) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
+                        }
+                    },
+                    trailingIcon = {
+                        if (searchQuery.isNotEmpty()) {
+                            IconButton(onClick = { searchQuery = "" }) {
+                                Icon(Icons.Default.Close, contentDescription = "Limpar")
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = SearchBarDefaults.colors(containerColor = Color.White)
+                ) {
+                    val filteredRegionals = regionalData.filter { regional ->
+                        regional.name.contains(searchQuery, ignoreCase = true) ||
+                        regional.ecopontos.any { it.contains(searchQuery, ignoreCase = true) }
+                    }
+
+                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        filteredRegionals.forEach { regional ->
+                            ListItem(
+                                headlineContent = { Text(regional.name) },
+                                supportingContent = { Text(regional.ecopontos.take(2).joinToString(", ") + "...") },
+                                leadingContent = { Icon(Icons.Default.LocationOn, null, tint = Color(0xFF2D5A27)) },
+                                modifier = Modifier.fillMaxWidth().clickable {
+                                    isSearchActive = false
+                                    navController.navigate(Screen.EcopontosList.createRoute(regional.id))
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
