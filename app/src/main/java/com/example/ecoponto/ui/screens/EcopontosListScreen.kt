@@ -74,7 +74,7 @@ fun EcopontosListScreen(navController: NavController, regionalId: Int) {
             if (!isSearchActive) {
                 NavigationBar(containerColor = Color.White, contentColor = Color(0xFF2D5A27)) {
                     NavigationBarItem(icon = { Icon(Icons.Default.Home, "Home") }, label = { Text("Home") }, selected = false, onClick = { navController.navigate(Screen.Home.route) })
-                    NavigationBarItem(icon = { Icon(Icons.Default.Place, "Mapa") }, label = { Text("Mapa") }, selected = false, onClick = { navController.navigate(Screen.Map.route) })
+                    NavigationBarItem(icon = { Icon(Icons.Default.Place, "Mapa") }, label = { Text("Mapa") }, selected = false, onClick = { navController.navigate(Screen.Map.createRoute()) })
                     NavigationBarItem(icon = { Icon(Icons.Default.LocationOn, "Pontos") }, label = { Text("Pontos") }, selected = true, onClick = { })
                 }
             }
@@ -125,7 +125,9 @@ fun EcopontosListScreen(navController: NavController, regionalId: Int) {
                         Card(
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = Color(0xFF2D5A27)),
-                            modifier = Modifier.fillMaxWidth().height(80.dp)
+                            modifier = Modifier.fillMaxWidth().height(80.dp).clickable {
+                                navController.navigate(Screen.Map.createRoute(ecoponto))
+                            }
                         ) {
                             Column(
                                 modifier = Modifier.fillMaxSize().padding(4.dp),
@@ -179,7 +181,10 @@ fun EcopontosListScreen(navController: NavController, regionalId: Int) {
                             ListItem(
                                 headlineContent = { Text(ecoponto) },
                                 leadingContent = { Icon(Icons.Default.LocationOn, null, tint = Color(0xFF2D5A27)) },
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier.fillMaxWidth().clickable {
+                                    isSearchActive = false
+                                    navController.navigate(Screen.Map.createRoute(ecoponto))
+                                }
                             )
                         }
                     }

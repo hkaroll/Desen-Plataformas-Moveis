@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -60,7 +59,7 @@ fun HomeScreen(navController: NavController) {
                                     text = { Text("Mapa", fontSize = 16.sp, color = Color(0xFF2D5A27), fontWeight = FontWeight.Medium) },
                                     onClick = { 
                                         mMenuExpanded = false
-                                        navController.navigate(Screen.Map.route) 
+                                        navController.navigate(Screen.Map.createRoute()) 
                                     }
                                 )
                                 HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp), thickness = 0.5.dp)
@@ -115,7 +114,7 @@ fun HomeScreen(navController: NavController) {
                         icon = { Icon(Icons.Default.Place, contentDescription = "Mapa") },
                         label = { Text("Mapa") },
                         selected = false,
-                        onClick = { navController.navigate(Screen.Map.route) }
+                        onClick = { navController.navigate(Screen.Map.createRoute()) }
                     )
                     NavigationBarItem(
                         icon = { Icon(Icons.Default.LocationOn, contentDescription = "Pontos") },
@@ -168,14 +167,17 @@ fun HomeScreen(navController: NavController) {
                 Spacer(modifier = Modifier.height(40.dp))
 
                 Button(
-                    onClick = { navController.navigate(Screen.Map.route) },
+                    onClick = { navController.navigate(Screen.Map.createRoute()) },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1B4332)),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF1B4332),
+                        contentColor = Color.White
+                    ),
                     shape = MaterialTheme.shapes.medium
                 ) {
-                    Icon(Icons.Default.LocationOn, contentDescription = null)
+                    Icon(Icons.Default.LocationOn, contentDescription = null, tint = Color.White)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Encontrar Pontos", fontSize = 16.sp)
+                    Text("Encontrar Pontos", fontSize = 16.sp, color = Color.White)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

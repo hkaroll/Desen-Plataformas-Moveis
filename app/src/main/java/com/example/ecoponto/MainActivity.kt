@@ -44,8 +44,16 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }
-        composable(Screen.Map.route) {
-            MapScreen(navController)
+        composable(
+            route = Screen.Map.route,
+            arguments = listOf(navArgument("ecopontoName") { 
+                type = NavType.StringType
+                nullable = true
+                defaultValue = null
+            })
+        ) { backStackEntry ->
+            val ecopontoName = backStackEntry.arguments?.getString("ecopontoName")
+            MapScreen(navController, ecopontoName = ecopontoName)
         }
         composable(Screen.Regionals.route) {
             RegionalsScreen(navController)

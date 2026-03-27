@@ -46,8 +46,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.maps.compose)
-    implementation(libs.play.services.maps)
+    
+    // OpenStreetMap (Alternativa gratuita ao Google Maps)
+    implementation(libs.osmdroid.android)
 
     // CameraX
     implementation(libs.androidx.camera.core)
