@@ -70,7 +70,6 @@ fun MapScreen(
         }
     }
 
-    // Lógica para centralizar no ecoponto vindo por argumento
     LaunchedEffect(uiState, ecopontoName) {
         if (uiState is MapUiState.Success && ecopontoName != null) {
             val ecopontos = (uiState as MapUiState.Success).ecopontos

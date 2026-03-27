@@ -31,7 +31,6 @@ fun RegionalsScreen(navController: NavController) {
     var searchQuery by remember { mutableStateOf("") }
     var isSearchActive by remember { mutableStateOf(false) }
 
-    // Filtra as regionais com base na busca para a Grid principal
     val filteredGridRegionals = remember(searchQuery) {
         if (searchQuery.isEmpty()) {
             regionalData
