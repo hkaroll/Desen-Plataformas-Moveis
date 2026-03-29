@@ -10,6 +10,7 @@ O aplicativo visa aplicar na prática os conhecimentos de desenvolvimento para s
 ## ✨ Funcionalidades Principais
 * **Busca de Ecopontos:** Listagem e visualização dos locais de coleta seletiva na cidade.
 * **Geolocalização (Sensor Nativo):** Integração com o sensor de **GPS** do dispositivo para capturar a posição do usuário e indicar as rotas/pontos mais próximos.
+* **Registro Fotográfico (Câmera):** Utilização da **câmera nativa** do dispositivo para o registro visual de materiais descartados ou dos pontos de coleta.
 * **Interface Intuitiva:** Telas projetadas com base nas diretrizes do **Material Design** e boas práticas de UX/UI, garantindo uma navegação fluida.
 
 ## 🛠️ Tecnologias e Ferramentas
